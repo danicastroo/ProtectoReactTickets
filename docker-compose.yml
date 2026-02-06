@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # Servicio del Backend (Tu API)
+  api:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    networks:
+      - mi-red
+
+  # Servicio del Frontend (Tu React)
+  # Nota: En desarrollo solemos usar npm run dev local, 
+  # pero si quieres dockerizarlo todo, descomenta esto.
+  # Por ahora, dejaremos el backend en docker y tú corres el front en terminal.
+
+networks:
+  mi-red:
+    driver: bridge
