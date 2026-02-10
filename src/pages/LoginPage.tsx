@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // IMPORTANTE: Importamos el hook de navegación
 import { useAuth } from "../auth/authContext";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
@@ -6,6 +7,7 @@ import { api } from "../services/http";
 
 export default function LoginPage() {
     const { login: saveSession } = useAuth();
+    const navigate = useNavigate(); // Instanciamos el navegador
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); 
@@ -13,16 +15,18 @@ export default function LoginPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(""); // Limpiamos errores previos
+        setError(""); 
 
         try {
-            // PASO 1: Hablamos con el SERVIDOR (Backend)
-            // Le enviamos el email y pass, y él nos responde con el token y el usuario
+            // 1. Petición al servidor
             const response = await api.post("/auth/login", { email, password });
             
-            // PASO 2: Si todo ha ido bien, guardamos la sesión en la APP
-            // response.data contiene { token: "...", user: { ... } }
+            // 2. Guardamos la sesión en el contexto global
             saveSession(response.data);
+
+            // 3. REDIRECCIÓN (Esto es lo que faltaba)
+            // Una vez logueado, mandamos al usuario al listado de incidencias
+            navigate("/incidencias");
 
         } catch (err) {
             console.error(err);

@@ -10,8 +10,7 @@ export default function AppLayout() {
                 <div className="navbar-inner">
                     <span className="brand">Ticketing</span>                    
                     <nav className="navlinks">
-                        {/* Enlaces Públicos */}
-                        <NavLink to="/about">Info</NavLink>
+                        <NavLink to="/info">Info</NavLink>
 
                         {/* Enlaces Privados */}
                         {isAuthenticated && (
@@ -41,7 +40,7 @@ export default function AppLayout() {
             </header>
 
             <main className="page">
-                {/* Aquí se cargarán las páginas hijas (Login, Lista, etc.) */}
+                {/* Aquí se cargarán las páginas hijas (Login, Lista, Info, etc.) */}
                 <Outlet />
             </main>
         </div>

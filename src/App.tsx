@@ -8,20 +8,23 @@ import IncidenciasPage from './pages/IncidenciasPage';
 import EditarIncidenciaPage from './pages/EditarIncidenciaPage';
 import NuevaIncidenciaPage from './pages/NuevaIncidenciaPage';
 import PerfilPage from './pages/PerfilPage';
+import InfoPage from "./pages/InfoPage";
 import { ProtectedRoute } from './routing/ProtectedRoute';
 
 function App() {
   return (
     <Routes>
+      {/* Todo lo que esté DENTRO de este Route tendrá el Menú (AppLayout) */}
       <Route path="/" element={<AppLayout />}>
         
-        {/* --- RUTAS PÚBLICAS (Cualquiera entra) --- */}
+        {/* --- RUTAS PÚBLICAS --- */}
         <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-
-        {/* --- RUTAS PRIVADAS (Solo con llave) --- */}
-        {/* Envolvemos cada una con <ProtectedRoute> */}
         
+        {/* ✅ CAMBIO: La ponemos aquí dentro para que tenga menú */}
+        <Route path="/info" element={<InfoPage />} />
+
+        {/* --- RUTAS PRIVADAS --- */}
         <Route path="/incidencias" element={
           <ProtectedRoute>
             <IncidenciasPage />
@@ -55,7 +58,8 @@ function App() {
             </div>
         } />
       
-      </Route>
+      </Route> {/* Fin del AppLayout */}
+
     </Routes>
   );
 }
