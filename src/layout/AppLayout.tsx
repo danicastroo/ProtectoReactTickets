@@ -8,7 +8,7 @@ export default function AppLayout() {
         <div>
             <header className="navbar">
                 <div className="navbar-inner">
-                    <span className="brand">Gestión Incidencias</span>
+                    <span className="brand">Ticketing</span>                    
                     <nav className="navlinks">
                         {/* Enlaces Públicos */}
                         <NavLink to="/about">Info</NavLink>
@@ -17,7 +17,7 @@ export default function AppLayout() {
                         {isAuthenticated && (
                             <>
                                 <NavLink to="/incidencias">Mis Incidencias</NavLink>
-                                <NavLink to="/profile">Mi Perfil</NavLink>
+                                <NavLink to="/perfil">Mi Perfil</NavLink>
                             </>
                         )}
 

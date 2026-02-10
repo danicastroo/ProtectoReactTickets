@@ -1,21 +1,26 @@
 import type { AuthSession } from "../types/Auth";
 
-const CLAVE = "auth_session";
+const KEY = "auth_session"; // La clave con la que se guardará en el navegador
 
 export const authStorage = {
-    get(): AuthSession | null {
-        const datos = localStorage.getItem(CLAVE);
-        if (!datos) return null;
+    // 1. Obtener datos (Leer del disco duro del navegador)
+    get: (): AuthSession | null => {
+        const data = localStorage.getItem(KEY);
+        if (!data) return null;
         try {
-            return JSON.parse(datos) as AuthSession;
+            return JSON.parse(data);
         } catch {
             return null;
         }
     },
-    set(session: AuthSession): void {
-        localStorage.setItem(CLAVE, JSON.stringify(session));
+
+    // 2. Guardar datos (Escribir en el disco duro del navegador)
+    set: (session: AuthSession) => {
+        localStorage.setItem(KEY, JSON.stringify(session));
     },
-    clear() {
-        localStorage.removeItem(CLAVE);
+
+    // 3. Borrar datos (Logout)
+    clear: () => {
+        localStorage.removeItem(KEY);
     }
 };

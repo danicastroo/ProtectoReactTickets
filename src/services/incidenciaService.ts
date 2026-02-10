@@ -1,34 +1,28 @@
-import { http } from './http';
-import type { Incidencia, NuevaIncidencia } from '../types/Incidencia';
+import { api } from "./http"; // <-- Esto busca http.ts en la misma carpeta
+import type { Incidencia, NuevaIncidencia } from "../types/Incidencia";
 
 export const incidenciaService = {
-    // Listar todas
     getAll: async (): Promise<Incidencia[]> => {
-        const response = await http.get<Incidencia[]>('/incidencias');
+        const response = await api.get("/incidencias");
         return response.data;
     },
 
-    // Obtener una por ID
     get: async (id: number): Promise<Incidencia> => {
-        const response = await http.get<Incidencia>(`/incidencias/${id}`);
+        const response = await api.get(`/incidencias/${id}`);
         return response.data;
     },
 
-    // Crear nueva
-    create: async (datos: NuevaIncidencia): Promise<Incidencia> => {
-        const datosConFecha = { ...datos, fecha: new Date().toISOString() };
-        const response = await http.post<Incidencia>('/incidencias', datosConFecha);
+    create: async (data: NuevaIncidencia): Promise<Incidencia> => {
+        const response = await api.post("/incidencias", data);
         return response.data;
     },
 
-    // Actualizar
-    update: async (id: number, datos: Partial<Incidencia>): Promise<Incidencia> => {
-        const response = await http.patch<Incidencia>(`/incidencias/${id}`, datos);
+    update: async (id: number, data: Partial<Incidencia>): Promise<Incidencia> => {
+        const response = await api.put(`/incidencias/${id}`, data);
         return response.data;
     },
 
-    // Borrar
     delete: async (id: number): Promise<void> => {
-        await http.delete(`/incidencias/${id}`);
+        await api.delete(`/incidencias/${id}`);
     }
 };

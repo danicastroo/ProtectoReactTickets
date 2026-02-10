@@ -1,47 +1,63 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import AppLayout from './layout/AppLayout';
+
+// Páginas
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import IncidenciasPage from './pages/IncidenciasPage';
-// 1. IMPORTANTE: Importamos la página nueva
+import EditarIncidenciaPage from './pages/EditarIncidenciaPage';
 import NuevaIncidenciaPage from './pages/NuevaIncidenciaPage';
-import { useAuth } from './auth/authContext';
-// Importamos solo el tipo para que TypeScript no se queje
-import type { ReactNode } from 'react';
+import PerfilPage from './pages/PerfilPage';
+import { ProtectedRoute } from './routing/ProtectedRoute';
 
-// Componente para proteger rutas
-function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-  return <>{children}</>;
-}
-
-export default function App() {
+function App() {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
-        {/* Redirección inicial */}
-        <Route path="/" element={<Navigate to="/incidencias" replace />} />
+      <Route path="/" element={<AppLayout />}>
         
-        {/* Ruta pública */}
+        {/* --- RUTAS PÚBLICAS (Cualquiera entra) --- */}
+        <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+
+        {/* --- RUTAS PRIVADAS (Solo con llave) --- */}
+        {/* Envolvemos cada una con <ProtectedRoute> */}
         
-        {/* Rutas protegidas (solo si estás logueado) */}
         <Route path="/incidencias" element={
-            <ProtectedRoute>
-              <IncidenciasPage />
-            </ProtectedRoute>
+          <ProtectedRoute>
+            <IncidenciasPage />
+          </ProtectedRoute>
         } />
 
-        {/* 2. IMPORTANTE: Aquí añadimos la nueva ruta */}
         <Route path="/incidencias/nueva" element={
-            <ProtectedRoute>
-              <NuevaIncidenciaPage />
-            </ProtectedRoute>
+          <ProtectedRoute>
+            <NuevaIncidenciaPage />
+          </ProtectedRoute>
         } />
-        
-        {/* Ruta para error 404 */}
-        <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
+
+        <Route path="/incidencias/editar/:id" element={
+          <ProtectedRoute>
+            <EditarIncidenciaPage />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/perfil" element={
+          <ProtectedRoute>
+             <PerfilPage />
+          </ProtectedRoute>
+        } />
+
+        {/* --- RUTA 404 --- */}
+        <Route path="*" element={
+            <div style={{ textAlign: "center", marginTop: "5rem" }}>
+                <h1 style={{ fontSize: "4rem", color: "var(--accent)" }}>404</h1>
+                <p>Página no encontrada</p>
+                <a href="/" style={{ color: "white" }}>Volver al inicio</a>
+            </div>
+        } />
+      
       </Route>
     </Routes>
   );
 }
+
+export default App;
